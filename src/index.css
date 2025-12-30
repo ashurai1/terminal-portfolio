@@ -1,0 +1,385 @@
+/* Global Reset & Base */
+:root {
+  --bg-color: #1e1e1e;
+  --text-color: #fafafa;
+  --prompt-user: #2ecc71;
+  --prompt-loc: #3498db;
+  --font-stack: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+body {
+  margin: 0;
+  background-color: #000;
+  height: 100vh;
+  min-height: -webkit-fill-available;
+  /* Mobile Safari fix */
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  font-family: var(--font-stack);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The wrapper applies theme vars dynamically */
+.terminal-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Safe area padding for notched phones if needed globally, but better on window */
+}
+
+/* Base Terminal Window (Desktop First) */
+.terminal-window {
+  width: 900px;
+  max-width: 95vw;
+  height: 600px;
+  max-height: 90vh;
+  background-color: var(--bg-color);
+  border-radius: 6px;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, width 0.3s ease, height 0.3s ease;
+  position: relative;
+  /* Context for absolute children */
+}
+
+/* Header */
+.terminal-header {
+  height: 28px;
+  background: linear-gradient(to bottom, #3a3a3a, #2b2b2b);
+  border-bottom: 1px solid #1c1c1c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.window-controls {
+  position: absolute;
+  left: 9px;
+  display: flex;
+  gap: 8px;
+  /* Hover target area */
+  padding-right: 10px;
+  height: 100%;
+  align-items: center;
+}
+
+.window-btn {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.window-btn.red {
+  background: #ff5f57;
+  box-shadow: inset 0 0 0 1px #e0443e;
+}
+
+.window-btn.yellow {
+  background: #febc2e;
+  box-shadow: inset 0 0 0 1px #d89e24;
+}
+
+.window-btn.green {
+  background: #28c840;
+  box-shadow: inset 0 0 0 1px #1aab29;
+}
+
+/* Icon Styles */
+.window-btn .icon {
+  opacity: 0;
+  font-size: 8px;
+  /* Small, crisp */
+  font-weight: 900;
+  line-height: 1;
+  color: #4a0002;
+  /* Default for red */
+  transition: opacity 0.15s ease-in-out;
+  display: block;
+  pointer-events: none;
+  /* Let click pass to button */
+}
+
+/* Specific icon colors */
+.window-btn.yellow .icon {
+  color: #5c4302;
+  font-size: 9px;
+}
+
+/* Minus needs slight tweak */
+.window-btn.green .icon {
+  color: #0b4d13;
+}
+
+/* Show icons on wrapper hover */
+.window-controls:hover .window-btn .icon {
+  opacity: 1;
+}
+
+/* Active State (Click) */
+.window-btn:active {
+  opacity: 0.6;
+}
+
+.terminal-title {
+  color: #888;
+  font-size: 13px;
+  font-family: -apple-system, sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: default;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 60%;
+}
+
+/* Terminal Body */
+.terminal-body {
+  flex: 1;
+  padding: 6px 8px;
+  overflow-y: auto;
+  color: var(--text-color);
+  font-size: 13px;
+  line-height: 1.4;
+  cursor: text;
+  display: flex;
+  flex-direction: column;
+  /* Scroll behavior */
+  scrollbar-width: thin;
+  scrollbar-color: #444 var(--bg-color);
+}
+
+.terminal-body::-webkit-scrollbar {
+  width: 10px;
+}
+
+.terminal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.terminal-body::-webkit-scrollbar-thumb {
+  background: #444;
+  border: 3px solid var(--bg-color);
+  border-radius: 6px;
+}
+
+/* Lines */
+.terminal-line {
+  margin-bottom: 2px;
+  word-break: break-all;
+}
+
+.input-mode {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.output-mode {
+  white-space: pre-wrap;
+  color: var(--text-color);
+}
+
+.prompt {
+  margin-right: 0.8ch;
+  white-space: nowrap;
+}
+
+.prompt-user {
+  color: var(--prompt-user);
+  font-weight: 700;
+}
+
+.prompt-location {
+  color: var(--prompt-loc);
+  font-weight: 700;
+}
+
+.prompt-symbol {
+  color: #888;
+}
+
+.active-line {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cmd-container {
+  position: relative;
+  flex: 1;
+  display: flex;
+}
+
+.hidden-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  border: none;
+  cursor: text;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  color: transparent;
+  /* Prevent zooming on iOS */
+  font-size: 16px;
+  transform: scale(0.8125);
+  /* Scale back down to effectively be 13px visual size if needed, layout wise simple 1px hidden is safer */
+  transform-origin: left top;
+}
+
+/* Better hidden input strategy for mobile to avoid zoom */
+@media screen and (max-width: 640px) {
+  .hidden-input {
+    font-size: 16px;
+    /* Prevents iOS expand */
+    transform: none;
+    /* Put it off screen or covering? Covering is better for focus clicks. */
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.visual-layer {
+  display: inline-flex;
+  width: 100%;
+  pointer-events: none;
+  align-items: center;
+  /* Vertical alignment */
+}
+
+.pre-cursor,
+.post-cursor {
+  white-space: pre-wrap;
+}
+
+.cursor-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.3em;
+  background-color: #888;
+  margin-left: 0;
+  margin-right: 0;
+  vertical-align: text-bottom;
+}
+
+.cursor-caret.blink {
+  animation: blink 1s step-end infinite;
+  background-color: var(--text-color);
+}
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+a {
+  color: #3498db;
+  text-decoration: none;
+  border-bottom: 1px dotted #3498db;
+}
+
+a:hover {
+  border-bottom: 1px solid #3498db;
+}
+
+
+/* ========================================= */
+/* RESPONSIVE MEDIA QUERIES                   */
+/* ========================================= */
+
+/* TABLET (641px - 1024px) */
+@media screen and (max-width: 1024px) {
+  .terminal-window {
+    width: 90vw;
+    height: 80vh;
+    max-width: none;
+    max-height: none;
+  }
+}
+
+/* MOBILE (Max 640px) */
+@media screen and (max-width: 640px) {
+  body {
+    background-color: var(--bg-color);
+    /* Match theme bg to avoid black bars */
+    height: 100dvh;
+    /* Dynamic viewport height */
+  }
+
+  .terminal-wrapper {
+    padding: 0;
+    align-items: flex-start;
+    /* Stick to top */
+  }
+
+  .terminal-window {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+  }
+
+  .terminal-header {
+    height: 28px;
+    /* Maintain touch target or visual consistency */
+    padding-top: env(safe-area-inset-top);
+    /* Notch support */
+    /* Sticky header ensures it stays visible? No, absolute/fixed usually better for app-like feel. 
+       Flex column handles this naturally if height is 100%. */
+  }
+
+  .terminal-body {
+    padding: 8px 10px;
+    padding-bottom: env(safe-area-inset-bottom);
+    /* Ensure padding for keyboard? 
+       Usually browser handles view resizing. 
+       We add a bit extra space at bottom for easy reading.
+    */
+    padding-bottom: 20px;
+    font-size: 13px;
+    /* Ensure readability */
+  }
+
+  /* Adjust prompt layout */
+  .prompt {
+    /* On very narrow screens, maybe stack prompt? Nah, terminal usually overflows. */
+    /* Let's ensure it doesn't break aggressively */
+  }
+
+  .window-controls {
+    display: flex;
+    /* Kept for visuals, but maybe muted interaction */
+    top: auto;
+    bottom: 8px;
+    /* Center partially */
+  }
+}
