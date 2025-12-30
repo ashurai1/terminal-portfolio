@@ -1,3 +1,5 @@
+[![Live on Vercel](https://img.shields.io/badge/Live-Vercel-black?logo=vercel)](https://terminal-portfolio-ten-rouge.vercel.app/)
+
 # Terminal Portfolio
 
 A hyper-realistic macOS Terminal-style portfolio website built with React and Vite. This project simulates a Zsh shell environment, complete with a virtual filesystem, command history, themes, and responsive design.
