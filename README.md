@@ -1,4 +1,4 @@
-[![Live on Vercel](https://img.shields.io/badge/Live-Vercel-black?logo=vercel)](https://terminal-portfolio-ten-rouge.vercel.app/)
+[![Live on Vercel](https://img.shields.io/badge/🚀%20Live-Vercel-black?style=for-the-badge&logo=vercel)](https://terminal-portfolio-ten-rouge.vercel.app/)
 
 # Terminal Portfolio
 
