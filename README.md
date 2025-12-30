@@ -1,4 +1,9 @@
-[![Live on Vercel](https://img.shields.io/badge/🚀%20Live-Vercel-black?style=for-the-badge&logo=vercel)](https://terminal-portfolio-ten-rouge.vercel.app/)
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?size=22&duration=3000&color=FFFFFF&background=000000&center=true&vCenter=true&lines=🚀+Live+on+Vercel;Click+to+Open+Website)](https://terminal-portfolio-ten-rouge.vercel.app/)
+
+[![Live Website](https://media.giphy.com/media/26AHONQ79FdWZhAI0/giphy.gif)](https://terminal-portfolio-ten-rouge.vercel.app/)
+
+
+
 
 # Terminal Portfolio
 
